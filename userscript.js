@@ -158,29 +158,29 @@ Make sure to base your reasoning on core Linux concepts or behaviors.
             resultDiv.innerHTML = "❌ <strong>Incorrect.</strong>";
             resultDiv.appendChild(explanationBox);
 
-            if (logging) {
-              const questionOnly = lines[0]
-                .replace(/<\/?[^>]+(>|$)/g, "")
-                .replace(/^\d+[\.\)]\s*/, "")
-                .trim();
-              const actualAnswerText = optionsMap[correctAnswer] || "N/A";
+            // Sending to server along with explanation
+            const questionOnly = lines[0]
+              .replace(/<\/?[^>]+(>|$)/g, "")
+              .replace(/^\d+[\.\)]\s*/, "")
+              .trim();
+            const actualAnswerText = optionsMap[correctAnswer] || "N/A";
 
-              GM_xmlhttpRequest({
-                method: "POST",
-                url: `${serverUrl}`,
-                headers: { "Content-Type": "application/json" },
-                data: JSON.stringify({
-                  question: questionOnly,
-                  answer: actualAnswerText,
-                }),
-                onload: function (res) {
-                  console.log("✅ Logged to server:", res.responseText);
-                },
-                onerror: function () {
-                  console.warn("❌ Failed to log to server");
-                },
-              });
-            }
+            GM_xmlhttpRequest({
+              method: "POST",
+              url: `${serverUrl}`,
+              headers: { "Content-Type": "application/json" },
+              data: JSON.stringify({
+                question: questionOnly,
+                answer: actualAnswerText,
+                info: explanation, // Sending explanation as 'info'
+              }),
+              onload: function (res) {
+                console.log("✅ Logged to server:", res.responseText);
+              },
+              onerror: function () {
+                console.warn("❌ Failed to log to server");
+              },
+            });
           } catch (e) {
             resultDiv.innerHTML = "⚠️ Failed to parse AI response.";
           }
