@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Sanfoundry Answer Checker + AI Explanation
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.4
 // @description  Adds answer input for MCQs, shows AI-based explanation when incorrect
-// @author       You
+// @author       Ashraf
 // @match        https://www.sanfoundry.com/*
 // @grant        GM_xmlhttpRequest
 // @connect      generativelanguage.googleapis.com
@@ -32,6 +32,10 @@
     const correctAnswer = answerMatch ? answerMatch[1].toLowerCase() : null;
     if (!correctAnswer) return;
 
+    // Remove the 'View Answer' span and the hidden answer div
+    span.remove();
+    answerDiv.remove();
+
     const optionsMatch = entry.innerHTML.match(
       /a\)[^\n<]+|b\)[^\n<]+|c\)[^\n<]+|d\)[^\n<]+/gi
     );
@@ -44,13 +48,26 @@
 
     const originalHTML = entry.innerHTML;
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.maxLength = 1;
-    input.placeholder = "a-d";
-    input.style.margin = "10px";
-    input.style.padding = "5px";
-    input.style.fontSize = "16px";
+    const select = document.createElement("select");
+    select.style.margin = "10px";
+    select.style.padding = "5px";
+    select.style.fontSize = "16px";
+    select.style.borderRadius = "5px";
+    select.style.border = "1px solid #ccc";
+
+    const defaultOption = document.createElement("option");
+    defaultOption.text = "Select answer";
+    defaultOption.value = "";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    select.appendChild(defaultOption);
+
+    ["a", "b", "c", "d"].forEach((opt) => {
+      const option = document.createElement("option");
+      option.value = opt;
+      option.text = opt;
+      select.appendChild(option);
+    });
 
     const button = document.createElement("button");
     button.innerText = "Submit";
@@ -63,14 +80,14 @@
     resultDiv.style.marginTop = "10px";
     resultDiv.style.fontSize = "15px";
 
-    entry.appendChild(input);
+    entry.appendChild(select);
     entry.appendChild(button);
     entry.appendChild(resultDiv);
 
     button.addEventListener("click", () => {
-      const userAnswer = input.value.trim().toLowerCase();
+      const userAnswer = select.value;
       if (!["a", "b", "c", "d"].includes(userAnswer)) {
-        alert("Please enter a valid option: a, b, c, or d");
+        alert("Please select a valid option.");
         return;
       }
 
@@ -78,7 +95,7 @@
         resultDiv.innerHTML = "✅ <strong>Correct!</strong>";
         resultDiv.style.color = "green";
         button.disabled = true;
-        input.disabled = true;
+        select.disabled = true;
         return;
       }
 
@@ -104,7 +121,7 @@ Explain in 2-3 sentences:
 2. Why the user's answer is incorrect or less appropriate.
 
 Make sure to base your reasoning on core Linux concepts or behaviors.
-            `.trim();
+      `.trim();
 
       GM_xmlhttpRequest({
         method: "POST",
@@ -141,13 +158,11 @@ Make sure to base your reasoning on core Linux concepts or behaviors.
             resultDiv.innerHTML = "❌ <strong>Incorrect.</strong>";
             resultDiv.appendChild(explanationBox);
 
-            // ✅ Send to server if logging enabled
             if (logging) {
               const questionOnly = lines[0]
                 .replace(/<\/?[^>]+(>|$)/g, "")
                 .replace(/^\d+[\.\)]\s*/, "")
                 .trim();
-
               const actualAnswerText = optionsMap[correctAnswer] || "N/A";
 
               GM_xmlhttpRequest({
