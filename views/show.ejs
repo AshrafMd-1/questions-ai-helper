@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="caramelLatte">
+  <head>
+    <meta charset="UTF-8" />
+    <title>QA Entries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.1.0/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-base-200 text-base-content min-h-screen">
+    <div class="max-w-5xl mx-auto px-6 py-10">
+      <h1
+        class="text-4xl font-bold text-center mb-10 text-primary-content flex justify-center items-center gap-2"
+      >
+        📝 All QA Entries
+      </h1>
+
+      <div class="grid gap-6">
+        <% entries.forEach((entry, index) => { %>
+        <div class="card bg-base-100 shadow-xl border border-base-300 p-6">
+          <div class="card-body p-0">
+            <h2 class="card-title text-lg text-secondary mb-2 break-words">
+              <%= index + 1 %>. <%= entry.question %>
+            </h2>
+            <p class="text-base text-base-content/100 break-words">
+              <%= entry.answer %>
+            </p>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>
