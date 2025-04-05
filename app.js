@@ -25,20 +25,26 @@ mongoose
 const qaSchema = new mongoose.Schema({
   question: { type: String, unique: true },
   answer: String,
+  info: String, // New field for additional information
 });
 const QA = mongoose.model("QA", qaSchema);
 
-// POST /send – Save Q&A if unique
+// GET / – Status server working
+app.get("/", (req, res) => {
+  res.send("Server is working!");
+});
+
+// POST /send – Save Q&A if unique, now with an additional info field
 app.post("/send", async (req, res) => {
-  const { question, answer } = req.body;
-  if (!question || !answer)
-    return res.status(400).send("Missing question or answer");
+  const { question, answer, info } = req.body;
+  if (!question || !answer || !info)
+    return res.status(400).send("Missing question, answer, or info");
 
   try {
     const exists = await QA.findOne({ question });
     if (exists) return res.status(409).send("Question already exists");
 
-    await QA.create({ question, answer });
+    await QA.create({ question, answer, info });
     res.status(201).send("Saved successfully");
   } catch (err) {
     console.error(err);

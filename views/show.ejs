@@ -22,11 +22,15 @@
         <% entries.forEach((entry, index) => { %>
         <div class="card bg-base-100 shadow-xl border border-base-300 p-6">
           <div class="card-body p-0">
-            <h2 class="card-title text-lg text-secondary mb-2 break-words">
+            <h2 class="card-title text-lg text-purple-500 mb-2 break-words">
               <%= index + 1 %>. <%= entry.question %>
             </h2>
-            <p class="text-base text-base-content/100 break-words">
-              <%= entry.answer %>
+            <p class="text-base text-white/80 break-words mb-4">
+              <strong>A. </strong><%= entry.answer %>
+            </p>
+            <!-- Add a gap and display info below answer -->
+            <p class="text-md text-blue-400 mb-2 break-words">
+              <%= entry.info %>
             </p>
           </div>
         </div>
