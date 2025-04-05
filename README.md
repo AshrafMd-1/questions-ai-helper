@@ -46,5 +46,6 @@ A Tampermonkey userscript that enhances Sanfoundry MCQ pages with:
 1. Clone this repo:
 
    ```bash
-   git clone https://github.com/yourusername/sanfoundry-ai-helper.git
-   cd sanfoundry-ai-helper
+   git clone https://github.com/yourusername/questions-ai-helper.git
+   cd questions-ai-helper
+   ```
