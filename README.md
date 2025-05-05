@@ -1,5 +1,8 @@
 # Sanfoundry AI Answer Helper 🧠✨
 
+> 📦 **Archived** — This project was created as a one-time learning exercise to aid in quiz preparation. It is no longer maintained or updated, but remains here for reference and learning purposes.
+
+
 A Tampermonkey userscript that enhances Sanfoundry MCQ pages with:
 
 - ✅ Answer input field
@@ -48,4 +51,3 @@ A Tampermonkey userscript that enhances Sanfoundry MCQ pages with:
    ```bash
    git clone https://github.com/yourusername/questions-ai-helper.git
    cd questions-ai-helper
-   ```
