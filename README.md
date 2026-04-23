@@ -166,7 +166,3 @@ Browse all logged entries at `http://localhost:3000/show`. Each card shows:
 | `PORT` | `app.js` | Server port (default: `3000`) |
 
 ---
-
-## License
-
-ISC
