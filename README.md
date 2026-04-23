@@ -164,5 +164,3 @@ Browse all logged entries at `http://localhost:3000/show`. Each card shows:
 | `serverUrl` | `userscript.js` | URL of your Express backend's `/send` endpoint |
 | `logging` | `userscript.js` | `true` to log to backend, `false` to disable |
 | `PORT` | `app.js` | Server port (default: `3000`) |
-
----
